@@ -5,7 +5,6 @@ import (
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/runner"
 
 	"github.com/spf13/cobra"
-	clioptions "k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
 type LintCmd struct {
@@ -20,12 +19,12 @@ func (l *LintCmd) Cmd() *cobra.Command {
 }
 
 // Complete implements runner.SubCommand
-func (*LintCmd) Complete(cfg *config.Config, ioStreams *clioptions.IOStreams, args []string) error {
+func (*LintCmd) Complete(cfg *config.Config, args []string) error {
 	panic("unimplemented")
 }
 
 // Run implements runner.SubCommand
-func (*LintCmd) Run(cfg *config.Config, ioStreams *clioptions.IOStreams) error {
+func (*LintCmd) Run(cfg *config.Config) error {
 	panic("unimplemented")
 }
 
