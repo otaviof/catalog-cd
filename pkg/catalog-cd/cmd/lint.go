@@ -18,24 +18,19 @@ func (l *LintCmd) Cmd() *cobra.Command {
 	return l.cmd
 }
 
-// Complete implements runner.SubCommand
-func (*LintCmd) Complete(cfg *config.Config, args []string) error {
+func (*LintCmd) Complete(_ *config.Config, _ []string) error {
 	panic("unimplemented")
 }
 
-// Run implements runner.SubCommand
-func (*LintCmd) Run(cfg *config.Config) error {
+func (*LintCmd) Run(_ *config.Config) error {
 	panic("unimplemented")
 }
 
-// Validate implements runner.SubCommand
 func (*LintCmd) Validate() error {
 	panic("unimplemented")
 }
 
 func NewLintCmd() runner.SubCommand {
-	cmd := &cobra.Command{
-		Use: "lint",
-	}
+	cmd := &cobra.Command{Use: "lint"}
 	return &LintCmd{cmd: cmd}
 }

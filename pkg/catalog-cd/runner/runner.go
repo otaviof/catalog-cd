@@ -6,15 +6,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Runner controls the SubCommand workflow from end-to-end.
 type Runner struct {
-	cfg        *config.Config
-	subCommand SubCommand
+	cfg        *config.Config // global configuration
+	subCommand SubCommand     // SubCommand instance
 }
 
+// Cmd exposes the subcommand's cobra command instance.
 func (r *Runner) Cmd() *cobra.Command {
 	return r.subCommand.Cmd()
 }
 
+// RunE cobra's RunE function, executes the whole SubCommand workflow.
 func (r *Runner) RunE(_ *cobra.Command, args []string) error {
 	err := r.subCommand.Complete(r.cfg, args)
 	if err != nil {

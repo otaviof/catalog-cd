@@ -1,13 +1,12 @@
 APP = catalog-cd
 OUTPUT_DIR ?= bin
+BIN = $(OUTPUT_DIR)/$(APP)
 
 CMD ?= ./cmd/$(APP)/...
 PKG ?= ./pkg/...
 
-BIN = $(OUTPUT_DIR)/$(APP)
-
 GOFLAGS ?= -v
-GOFLAGS_TEST ?= -race -cover
+GOFLAGS_TEST ?= -v -cover
 
 ARGS ?=
 
@@ -22,3 +21,9 @@ default: $(BIN)
 .PHONY: run
 run:
 	go run $(CMD) $(ARGS)
+
+test: test-unit
+
+.PHONY: test-unit
+test-unit:
+	go test $(GOFLAGS_TEST) $(PKG) $(CMD) $(ARGS)
