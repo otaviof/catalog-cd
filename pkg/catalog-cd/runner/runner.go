@@ -4,14 +4,11 @@ import (
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/config"
 
 	"github.com/spf13/cobra"
-	"k8s.io/cli-runtime/pkg/genericclioptions"
-	clioptions "k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
 type Runner struct {
-	subCommand SubCommand
 	cfg        *config.Config
-	ioStreams  *genericclioptions.IOStreams
+	subCommand SubCommand
 }
 
 func (r *Runner) Cmd() *cobra.Command {
@@ -19,20 +16,23 @@ func (r *Runner) Cmd() *cobra.Command {
 }
 
 func (r *Runner) RunE(_ *cobra.Command, args []string) error {
-	err := r.subCommand.Complete(r.cfg, r.ioStreams, args)
+	err := r.subCommand.Complete(r.cfg, args)
 	if err != nil {
 		return err
 	}
 	if err = r.subCommand.Validate(); err != nil {
 		return err
 	}
-	return r.subCommand.Run(r.cfg, r.ioStreams)
+	return r.subCommand.Run(r.cfg)
 }
 
-func NewRunner(subCommand SubCommand, cfg *config.Config, ioStreams *clioptions.IOStreams) *Runner {
-	return &Runner{
-		subCommand: subCommand,
+// NewRunner instantiates a Runner, making sure it's RunE command is mapped to the local method,
+// which executes the whole interface workflow.
+func NewRunner(cfg *config.Config, subCommand SubCommand) *Runner {
+	r := &Runner{
 		cfg:        cfg,
-		ioStreams:  ioStreams,
+		subCommand: subCommand,
 	}
+	r.subCommand.Cmd().RunE = r.RunE
+	return r
 }

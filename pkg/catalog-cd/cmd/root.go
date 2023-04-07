@@ -5,18 +5,19 @@ import (
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/runner"
 
 	"github.com/spf13/cobra"
-	clioptions "k8s.io/cli-runtime/pkg/genericclioptions"
+	tkncli "github.com/tektoncd/cli/pkg/cli"
 )
 
-func NewRootCmd(ioStreams *clioptions.IOStreams) *cobra.Command {
+func NewRootCmd(stream *tkncli.Stream) *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:  "catalog-cd",
 		Long: `TODO`,
 	}
 
-	cfg := config.NewConfig()
+	cfg := config.NewConfig(stream, rootCmd.PersistentFlags())
 
-	rootCmd.AddCommand(runner.NewRunner(NewLintCmd(), cfg, ioStreams).Cmd())
+	rootCmd.AddCommand(runner.NewRunner(cfg, NewLintCmd()).Cmd())
+	rootCmd.AddCommand(runner.NewRunner(cfg, NewProbeCmd()).Cmd())
 
 	return rootCmd
 }

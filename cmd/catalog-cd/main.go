@@ -5,12 +5,15 @@ import (
 	"os"
 
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/cmd"
-	clioptions "k8s.io/cli-runtime/pkg/genericclioptions"
+	tkncli "github.com/tektoncd/cli/pkg/cli"
 )
 
 func main() {
-	ioStreams := &clioptions.IOStreams{In: os.Stdin, Out: os.Stdout, ErrOut: os.Stderr}
-	rootCmd := cmd.NewRootCmd(ioStreams)
+	rootCmd := cmd.NewRootCmd(&tkncli.Stream{
+		In:  os.Stdin,
+		Out: os.Stdout,
+		Err: os.Stderr,
+	})
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %v\n", err)
 		os.Exit(1)
