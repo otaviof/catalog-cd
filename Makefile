@@ -26,4 +26,4 @@ test: test-unit
 
 .PHONY: test-unit
 test-unit:
-	go test $(GOFLAGS_TEST) $(PKG) $(CMD) $(ARGS)
+	go test $(GOFLAGS_TEST) $(CMD) $(PKG) $(ARGS)

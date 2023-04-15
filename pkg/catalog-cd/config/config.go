@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/pflag"
 	tkncli "github.com/tektoncd/cli/pkg/cli"
@@ -13,10 +14,6 @@ type Config struct {
 	kubeContext    string
 	namespace      string
 	tp             *tkncli.TektonParams
-}
-
-func (c *Config) Info(a ...any) {
-	fmt.Print(a...)
 }
 
 func (c *Config) Infof(format string, a ...any) {
@@ -61,8 +58,8 @@ func (c *Config) GetClientsOrPanic() *tkncli.Clients {
 	return cs
 }
 
-// NewConfig set up a new Config instance adding command-line flags to set its attributes.
-func NewConfig(stream *tkncli.Stream, flags *pflag.FlagSet) *Config {
+// NewConfigWithFlags sets up a new Config instance adding command-line flags to set its attributes.
+func NewConfigWithFlags(stream *tkncli.Stream, flags *pflag.FlagSet) *Config {
 	cfg := &Config{Stream: stream}
 
 	flags.StringVarP(&cfg.kubeConfigPath, "kubeconfig", "k", cfg.kubeConfigPath,
@@ -72,4 +69,13 @@ func NewConfig(stream *tkncli.Stream, flags *pflag.FlagSet) *Config {
 	flags.StringVarP(&cfg.namespace, "namespace", "n", cfg.namespace,
 		"kubernetes namespace name")
 	return cfg
+}
+
+// NewConfig sets up a new Config using the default STDIN, STDOUT and STDERR.
+func NewConfig() *Config {
+	return &Config{Stream: &tkncli.Stream{
+		In:  os.Stdin,
+		Out: os.Stdout,
+		Err: os.Stderr,
+	}}
 }
