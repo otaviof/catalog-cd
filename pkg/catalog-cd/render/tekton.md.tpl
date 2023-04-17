@@ -1,23 +1,23 @@
 ## Workspaces
 
-| Workspace Name    | Optional                           | Description                |
-| :---------------- | :--------------------------------- | :------------------------- |
+| Workspace      | Optional                           | Description                |
+| :------------- | :--------------------------------: | :------------------------- |
 {{- range .workspaces }}
-| `{{ .name }}`     | `{{ .optional | formatOptional }}` | {{ .description | chomp }} |
+| `{{ .name }}`  | `{{ .optional | formatOptional }}` | {{ .description | chomp }} |
 {{- end }}
 
 ## Params
 
-| Param Name    | Type                       | Default                      | Description                |
-| :------------ | :------------------------- | :--------------------------- | :------------------------- |
+| Param         | Type                       | Default                      | Description                |
+| :------------ | :------------------------: | :--------------------------- | :------------------------- |
 {{- range .params }}
 | `{{ .name }}` | `{{ .type | formatType }}` | {{ .default | formatValue }} | {{ .description | chomp }} |
 {{- end }}
 
 ## Results
 
-| Result Name    | Description                |
-| :------------- | :------------------------- |
+| Result        | Description                |
+| :------------ | :------------------------- |
 {{- range .results }}
-| `{{ .name }}`  | {{ .description | chomp }} |
+| `{{ .name }}` | {{ .description | chomp }} |
 {{- end }}
