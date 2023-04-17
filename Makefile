@@ -22,6 +22,9 @@ default: $(BIN)
 run:
 	go run $(CMD) $(ARGS)
 
+install:
+	go install $(CMD)
+
 test: test-unit
 
 .PHONY: test-unit
