@@ -25,19 +25,12 @@ func (m *Markdown) templateInputs() (map[string][]interface{}, error) {
 	inputs := map[string][]interface{}{}
 	var err error
 
-	inputs["workspaces"], err = linter.GetNestedSlice(m.u, "spec", "workspaces")
-	if err != nil {
-		return nil, err
+	for _, attribute := range []string{"workspaces", "params", "results"} {
+		inputs[attribute], err = linter.GetNestedSlice(m.u, "spec", attribute)
+		if err != nil {
+			return nil, err
+		}
 	}
-	inputs["params"], err = linter.GetNestedSlice(m.u, "spec", "params")
-	if err != nil {
-		return nil, err
-	}
-	inputs["results"], err = linter.GetNestedSlice(m.u, "spec", "results")
-	if err != nil {
-		return nil, err
-	}
-
 	return inputs, nil
 }
 
