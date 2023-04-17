@@ -3,7 +3,6 @@ package linter
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/config"
 
@@ -22,23 +21,10 @@ var (
 	ErrInvalidResult    = errors.New("invalid results definition")
 )
 
-// getNestedSlice retrieve the informed path (based on fields) as a slice.
-func (l *Linter) getNestedSlice(fields ...string) ([]interface{}, error) {
-	slice, found, err := unstructured.NestedSlice(l.u.Object, fields...)
-	if err != nil {
-		return nil, err
-	}
-	if !found {
-		l.cfg.Errorf("# WARNING: %q is not found on the resource!\n", strings.Join(fields, "."))
-		return []interface{}{}, nil
-	}
-	return slice, nil
-}
-
 // workspaces extract and lint the workspaces.
 func (l *Linter) workspaces() error {
 	l.cfg.Infof("# Inspecting workspaces...\n")
-	wbs, err := l.getNestedSlice("spec", "workspaces")
+	wbs, err := GetNestedSlice(l.u, "spec", "workspaces")
 	if err != nil {
 		return err
 	}
@@ -52,7 +38,7 @@ func (l *Linter) workspaces() error {
 // params extract and lint the params.
 func (l *Linter) params() error {
 	l.cfg.Infof("# Inspecting params...\n")
-	ps, err := l.getNestedSlice("spec", "params")
+	ps, err := GetNestedSlice(l.u, "spec", "params")
 	if err != nil {
 		return err
 	}
@@ -66,7 +52,7 @@ func (l *Linter) params() error {
 // results extract and lint the results.
 func (l *Linter) results() error {
 	l.cfg.Infof("# Inspecting results...\n")
-	rs, err := l.getNestedSlice("spec", "results")
+	rs, err := GetNestedSlice(l.u, "spec", "results")
 	if err != nil {
 		return err
 	}
@@ -92,7 +78,7 @@ func (l *Linter) Enforce() error {
 // NewLinter instantiate the resource linter by reading and decoding the resource file.
 func NewLinter(cfg *config.Config, resource string) (*Linter, error) {
 	cfg.Infof("# Linting resource file %q...\n", resource)
-	u, err := readAndDecodeResourceFile(resource)
+	u, err := ReadAndDecodeResourceFile(resource)
 	if err != nil {
 		return nil, err
 	}

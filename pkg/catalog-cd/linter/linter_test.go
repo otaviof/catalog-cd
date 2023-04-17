@@ -3,8 +3,9 @@ package linter
 import (
 	"testing"
 
-	o "github.com/onsi/gomega"
 	"github.com/otaviof/catalog-cd/pkg/catalog-cd/config"
+
+	o "github.com/onsi/gomega"
 )
 
 func TestNewLinter(t *testing.T) {

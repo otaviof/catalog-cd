@@ -11,9 +11,9 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 )
 
-// readAndDecodeResourceFile reads the informed file and decode contents using Tekton's Kubernetes
+// ReadAndDecodeResourceFile reads the informed file and decode contents using Tekton's Kubernetes
 // schema, returning a Unstructured instance.
-func readAndDecodeResourceFile(resource string) (*unstructured.Unstructured, error) {
+func ReadAndDecodeResourceFile(resource string) (*unstructured.Unstructured, error) {
 	payload, err := os.ReadFile(resource)
 	if err != nil {
 		return nil, err
